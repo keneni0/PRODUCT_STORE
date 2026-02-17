@@ -29,11 +29,16 @@ export const updateUser = async (id: string, data: Partial<NewUser>) => {
 }
 
 export const upsertUser = async (data: NewUser) => {
-    const existingUser = await getUserById(data.id);
-    if (existingUser) {
-        return await updateUser(data.id, data);
-   return await createUser(data);
-    }
+    //const existingUser = await getUserById(data.id);
+    //if (existingUser) {
+      //  return await updateUser(data.id, data);
+   //return await createUser(data);
+
+    const [upsertedUser] = await db.insert(user).values(data).onConflictDoUpdate({
+        target: user.id,
+        set: data,
+    }).returning();
+    return upsertedUser;
 }
 
 //Product queries
@@ -70,11 +75,19 @@ export const getProductsByUserId = async (userId: string) => {
 }
 
 export const updateProduct = async (id: string, data: Partial<NewProduct>) => {
+    const existingProduct = await getProductById(id);
+    if (!existingProduct) {
+        throw new Error("Product not found");
+    }
     const [updateProduct] = await db.update(products).set(data).where(eq(products.id,id)).returning();
     return updateProduct;
 }
 
 export const deleteProduct = async (id: string) => {
+    const existingProduct = await getProductById(id);
+    if (!existingProduct) {
+        throw new Error("Product not found");
+    }
     const [deleteProduct] = await db.delete(products).where(eq(products.id,id)).returning();
     return deleteProduct;
 }
@@ -88,6 +101,10 @@ export const createComment = async (data: NewComment) => {
 }
 
 export const deleteComment = async (id: string) => {
+    const existingComment = await getCommentsById(id);
+    if (!existingComment) {
+        throw new Error("Comment not found");
+    }
     const [deleteComment] = await db.delete(comments).where(eq(comments.id,id)).returning();
     return deleteComment;
 }
