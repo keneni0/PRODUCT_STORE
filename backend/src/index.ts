@@ -4,6 +4,11 @@ import dotenv from "dotenv";
 import { clerkMiddleware } from "@clerk/express";
 import cors from "cors";
 
+import userRoutes from "./routes/userRoutes.js";
+import productRoutes from "./routes/productRoutes.js";
+import commentRoutes from "./routes/commentRoutes.js";  
+
+
 dotenv.config();
 
 const app = express();
@@ -20,6 +25,11 @@ const PORT = process.env.PORT || 5000;
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello, World!");
 });
+
+
+app.use("/api/users", userRoutes)
+app.use("/api/products", productRoutes)
+app.use("/api/comments", commentRoutes)
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
