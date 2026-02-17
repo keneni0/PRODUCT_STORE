@@ -1,0 +1,99 @@
+import { db } from "./index.js";
+import { eq } from "drizzle-orm";
+import { user,products,comments, type NewProduct, type NewUser, type NewComment} from "./schema.js";
+
+//User queries
+export const createUser = async (data: NewUser) => {
+    const [userNew] = await db.insert(user).values(data).returning();
+    return userNew;
+}
+
+
+export const getUserById = async (id: string) => {
+    const foundUser = await db.query.user.findFirst({
+        where: eq(user.id, id),
+    });
+
+    if (!foundUser) {
+        throw new Error("User not found");
+    }
+    return foundUser;
+};
+
+export const updateUser = async (id: string, data: Partial<NewUser>) => {
+    const [updatedUser] = await db.update(user).set(data).where(eq(user.id, id)).returning();
+    if (!updatedUser) {
+        throw new Error("User not found");
+    }
+    return updatedUser;
+}
+
+export const upsertUser = async (data: NewUser) => {
+    const existingUser = await getUserById(data.id);
+    if (existingUser) {
+        return await updateUser(data.id, data);
+   return await createUser(data);
+    }
+}
+
+//Product queries
+
+export const createProduct = async (data: NewProduct) =>{
+    const [NewProduct] = await db.insert(products).values(data).returning();
+    return NewProduct;
+}
+
+export const getAllProducts = async () => {
+    return db.query.products.findMany({
+        with: {user: true},
+        orderBy: (products, { desc }) => [desc(products.createdAt)],
+    });
+}
+
+export const getProductById = async (id: string) => {
+    return db.query.products.findFirst({
+        where: eq(products.id,id),
+        with:{user: true, 
+            comments:{ with : 
+                {user: true},
+                orderBy: (comments, { desc }) => [desc(comments.createdAt)]}
+        }
+    })
+}
+
+export const getProductsByUserId = async (userId: string) => {
+       return db.query.products.findMany({
+        where: eq(products.userId, userId),
+        with: {user: true},
+        orderBy: (products, { desc }) => [desc(products.createdAt)],
+    });
+}
+
+export const updateProduct = async (id: string, data: Partial<NewProduct>) => {
+    const [updateProduct] = await db.update(products).set(data).where(eq(products.id,id)).returning();
+    return updateProduct;
+}
+
+export const deleteProduct = async (id: string) => {
+    const [deleteProduct] = await db.delete(products).where(eq(products.id,id)).returning();
+    return deleteProduct;
+}
+
+
+//Comment queries
+
+export const createComment = async (data: NewComment) => {
+    const [NewComment] = await db.insert(comments).values(data).returning();
+    return NewComment;
+}
+
+export const deleteComment = async (id: string) => {
+    const [deleteComment] = await db.delete(comments).where(eq(comments.id,id)).returning();
+    return deleteComment;
+}
+
+export const getCommentsById = async (id:string) => {
+    return db.query.comments.findFirst({
+        where: eq(comments.id,id),
+        with: {user: true, product: true}
+    })}
