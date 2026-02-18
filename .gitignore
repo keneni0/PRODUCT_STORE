@@ -37,3 +37,4 @@ public/
 # Misc
 coverage/
 .cache/
+*.md
