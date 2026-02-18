@@ -1,68 +1,100 @@
+@import "tailwindcss";
+
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+  /* Spec palette */
+  --merkato-orange-rgb: 224 123 57; /* #E07B39 */
+  --merkato-brown-rgb: 107 63 31; /* #6B3F1F */
+  --merkato-green-rgb: 74 124 89; /* #4A7C59 */
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  /* Neutrals */
+  --merkato-cream-rgb: 249 248 246; /* #F9F8F6 */
+  --merkato-dark-rgb: 17 24 39; /* #111827 */
+  --merkato-gray-rgb: 55 65 81; /* #374151 */
+  --merkato-beige-rgb: 245 230 211; /* #F5E6D3 */
+}
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
+html,
+body,
+#root {
+  height: 100%;
+  background-color: rgb(var(--merkato-cream-rgb));
+  color: rgb(var(--merkato-dark-rgb));
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-feature-settings: "kern" 1, "liga" 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+/* Merkato palette utility classes (works even if Tailwind doesn't generate custom tokens) */
+.bg-merkato-orange {
+  background-color: rgb(var(--merkato-orange-rgb));
 }
-a:hover {
-  color: #535bf2;
+.bg-merkato-orange-90 {
+  background-color: rgb(var(--merkato-orange-rgb) / 0.9);
 }
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+.bg-merkato-brown {
+  background-color: rgb(var(--merkato-brown-rgb));
 }
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+.bg-merkato-green {
+  background-color: rgb(var(--merkato-green-rgb));
 }
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
+.bg-merkato-green-30 {
+  background-color: rgb(var(--merkato-green-rgb) / 0.3);
 }
-button:hover {
-  border-color: #646cff;
+.bg-merkato-cream {
+  background-color: rgb(var(--merkato-cream-rgb));
 }
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+.bg-merkato-beige {
+  background-color: rgb(var(--merkato-beige-rgb));
+}
+.bg-merkato-dark {
+  background-color: rgb(var(--merkato-dark-rgb));
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+.text-merkato-orange {
+  color: rgb(var(--merkato-orange-rgb));
+}
+.text-merkato-brown {
+  color: rgb(var(--merkato-brown-rgb));
+}
+.text-merkato-green {
+  color: rgb(var(--merkato-green-rgb));
+}
+.text-merkato-gray {
+  color: rgb(var(--merkato-gray-rgb));
+}
+.text-merkato-dark {
+  color: rgb(var(--merkato-dark-rgb));
+}
+
+.border-merkato-orange {
+  border-color: rgb(var(--merkato-orange-rgb));
+}
+
+.fill-merkato-orange {
+  fill: rgb(var(--merkato-orange-rgb));
+}
+
+.btn-primary {
+  background-color: rgb(var(--merkato-orange-rgb));
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  font-weight: 700;
+  transition: background-color 0.2s;
+}
+.btn-primary:hover {
+  background-color: rgb(var(--merkato-orange-rgb) / 0.9);
+}
+.btn-outline {
+  border: 2px solid white;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  font-weight: 700;
+  transition: all 0.2s;
+}
+.btn-outline:hover {
+  background-color: white;
+  color: rgb(var(--merkato-dark-rgb));
 }
