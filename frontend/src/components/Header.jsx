@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+<<<<<<< HEAD
 import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton, useUser } from '@clerk/clerk-react';
 import { Search } from 'lucide-react';
 import { useCart } from '../context/CartContext';
@@ -10,6 +11,15 @@ export default function Header() {
   const { itemCount } = useCart();
   const { user } = useUser();
   const { role, isSeller, isAdmin } = useRole();
+=======
+import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton } from '@clerk/clerk-react';
+import { Search } from 'lucide-react';
+import { useCart } from '../context/CartContext';
+import { products } from '../mockData';
+
+export default function Header() {
+  const { itemCount } = useCart();
+>>>>>>> a57743dd7920350dcce6e326a41e080851f72dea
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [showDropdown, setShowDropdown] = useState(false);
@@ -122,6 +132,7 @@ export default function Header() {
             <Link to="/deals" className="text-sm font-medium text-merkato-gray hover:text-merkato-orange transition-colors">Deals</Link>
             <Link to="/sell" className="text-sm font-medium text-merkato-gray hover:text-merkato-orange transition-colors">Sell</Link>
             
+<<<<<<< HEAD
             {/* Role-based links */}
             <SignedIn>
               {isSeller && (
@@ -136,6 +147,8 @@ export default function Header() {
               )}
             </SignedIn>
             
+=======
+>>>>>>> a57743dd7920350dcce6e326a41e080851f72dea
             {/* Cart */}
             <Link to="/cart" className="relative inline-flex items-center p-2 hover:bg-gray-50 rounded-lg transition-colors">
               <svg className="w-6 h-6 text-merkato-gray" fill="none" stroke="currentColor" viewBox="0 0 24 24">

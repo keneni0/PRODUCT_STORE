@@ -1,21 +1,33 @@
+<<<<<<< HEAD
 import React, { useState, useMemo, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Header from '../components/Header';
 import ProductCard from '../components/ProductCard';
 import { categories, getCategoryById } from '../mockData';
 import { api } from '../utils/api';
+=======
+import React, { useState, useMemo } from 'react';
+import { useParams } from 'react-router-dom';
+import Header from '../components/Header';
+import ProductCard from '../components/ProductCard';
+import { products, categories, getCategoryById } from '../mockData';
+>>>>>>> a57743dd7920350dcce6e326a41e080851f72dea
 import Footer from '../components/Footer';
 
 export default function CategoryPage(){
   const { id } = useParams();
   const category = getCategoryById(id);
+<<<<<<< HEAD
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+=======
+>>>>>>> a57743dd7920350dcce6e326a41e080851f72dea
   const [priceMin, setPriceMin] = useState(0);
   const [priceMax, setPriceMax] = useState(10000);
   const [showPopularOnly, setShowPopularOnly] = useState(false);
   const [sectionFilter, setSectionFilter] = useState(category?.title || 'All');
 
+<<<<<<< HEAD
   useEffect(() => {
     loadProducts();
   }, [id]);
@@ -53,11 +65,21 @@ export default function CategoryPage(){
     }
   };
 
+=======
+>>>>>>> a57743dd7920350dcce6e326a41e080851f72dea
   const allSections = ['All', ...new Set(products.map(p => p.section))];
 
   const filtered = useMemo(() => {
     let result = products;
 
+<<<<<<< HEAD
+=======
+    // Filter by category/tera
+    if (category) {
+      result = result.filter(p => p.teraId === id || p.section === category.title);
+    }
+
+>>>>>>> a57743dd7920350dcce6e326a41e080851f72dea
     // Filter by section dropdown
     if (sectionFilter !== 'All') {
       result = result.filter(p => p.section === sectionFilter);
@@ -72,6 +94,7 @@ export default function CategoryPage(){
     }
 
     return result;
+<<<<<<< HEAD
   }, [products, sectionFilter, priceMin, priceMax, showPopularOnly]);
 
   const priceRange = useMemo(() => {
@@ -79,6 +102,14 @@ export default function CategoryPage(){
     const prices = products.map(p => p.priceETB);
     return { min: Math.min(...prices), max: Math.max(...prices) };
   }, [products]);
+=======
+  }, [id, category, sectionFilter, priceMin, priceMax, showPopularOnly]);
+
+  const priceRange = useMemo(() => {
+    const prices = products.map(p => p.priceETB);
+    return { min: Math.min(...prices), max: Math.max(...prices) };
+  }, []);
+>>>>>>> a57743dd7920350dcce6e326a41e080851f72dea
 
   if (!category) {
     return (
@@ -171,12 +202,16 @@ export default function CategoryPage(){
 
           {/* Products Grid */}
           <section className="flex-1">
+<<<<<<< HEAD
             {loading ? (
               <div className="text-center py-16">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-merkato-orange mx-auto mb-4"></div>
                 <p className="text-gray-600">Loading products...</p>
               </div>
             ) : filtered.length === 0 ? (
+=======
+            {filtered.length === 0 ? (
+>>>>>>> a57743dd7920350dcce6e326a41e080851f72dea
               <div className="bg-white rounded-xl p-12 text-center shadow-md">
                 <p className="text-gray-600 mb-4">No products found matching your filters.</p>
                 <button
