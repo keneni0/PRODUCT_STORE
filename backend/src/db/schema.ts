@@ -1,6 +1,8 @@
-import { pgTable,text,timestamp,uuid } from "drizzle-orm/pg-core";
+import { pgTable,text,timestamp,uuid, integer, pgEnum } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
+// Role enum
+export const roleEnum = pgEnum("user_role", ["customer", "seller", "admin"]);
 
 //"users" table
 export const user = pgTable("users", {
@@ -8,18 +10,26 @@ export const user = pgTable("users", {
     email: text("email").notNull().unique(),
     name: text("name").notNull(),
     imageUrl: text("image_url"),
+    role: roleEnum("role").default("customer").notNull(),
     createdAt: timestamp("created_at", { mode:"date" }).defaultNow().notNull(),
-   updatedAt: timestamp("updated_at", { mode:"date" })
+    updatedAt: timestamp("updated_at", { mode:"date" })
   .defaultNow()
   .$onUpdate(() => new Date())
-  .notNull()})
+  .notNull()
+})
 
 export const products = pgTable("products", {
     id: uuid("id").primaryKey().defaultRandom(),
     title: text("title").notNull(),
     description: text("description").notNull(),
     imageUrl: text("image_url").notNull(),
+    priceETB: integer("price_etb").notNull(),
+    stock: integer("stock").default(0).notNull(),
+    section: text("section").notNull(), // e.g., "Buna Tera", "Shiro Tera"
+    teraId: text("tera_id").notNull(), // e.g., "buna", "shiro"
     userId: text("user_id").notNull().references(() => user.id, { onDelete: "cascade" }),
+    popular: text("popular").default("false"), // boolean as text for simplicity
+    rating: text("rating"), // store as text, can be converted to number
     createdAt: timestamp("created_at", { mode:"date" }).defaultNow().notNull(),
    updatedAt: timestamp("updated_at", { mode:"date" })
   .defaultNow()

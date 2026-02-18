@@ -15,6 +15,18 @@ export async function getAllProducts(req: Request, res: Response) {
     }
 }
 
+//GET PRODUCTS BY TERA/CATEGORY (public route)
+export async function getProductsByTera(req: Request, res: Response) {
+    try {
+        const { teraId } = req.params;
+        const products = await queries.getProductsByTeraId(teraId);
+        res.status(200).json(products);
+    } catch(err) {
+        console.error(err);
+        res.status(500).json({ error: "Failed to get products by category" });
+    }
+}
+
 //GET PRODUCTS OF CURRENT USER(private route)
 export async function getMyProducts(req: Request, res: Response) {
     try {
@@ -54,17 +66,23 @@ export async function createProduct(req: Request, res: Response) {
             return res.status(401).json({ message: "Unauthorized" });
         }
 
-        const { title, description, imageUrl} = req.body;
+        const { title, description, imageUrl, priceETB, stock, section, teraId, popular, rating } = req.body;
 
-        if (!title || !description || !imageUrl) {
-            return res.status(400).json({ error: "Title, description and imageUrl are required" });
+        if (!title || !description || !imageUrl || !priceETB || !section || !teraId) {
+            return res.status(400).json({ error: "Title, description, imageUrl, priceETB, section, and teraId are required" });
         }
 
         const newProduct = await queries.createProduct({
             title,
             description,
             imageUrl,
-            userId
+            priceETB: parseInt(priceETB),
+            stock: stock ? parseInt(stock) : 0,
+            section,
+            teraId,
+            userId,
+            popular: popular ? "true" : "false",
+            rating: rating ? String(rating) : null,
         });
 
         res.status(201).json(newProduct);
@@ -95,16 +113,22 @@ export async function updateProduct(req: Request, res: Response) {
             return res.status(403).json({ error: "Forbidden.You can only update your own products." });
         }
 
-        const { title, description, imageUrl } = req.body;
-        const updatedProduct = await queries.updateProduct(id, {
-            title,
-            description,
-            imageUrl
-        });
+        const { title, description, imageUrl, priceETB, stock, section, teraId, popular, rating } = req.body;
+        
+        const updateData: any = {};
+        if (title) updateData.title = title;
+        if (description) updateData.description = description;
+        if (imageUrl) updateData.imageUrl = imageUrl;
+        if (priceETB !== undefined) updateData.priceETB = parseInt(priceETB);
+        if (stock !== undefined) updateData.stock = parseInt(stock);
+        if (section) updateData.section = section;
+        if (teraId) updateData.teraId = teraId;
+        if (popular !== undefined) updateData.popular = popular ? "true" : "false";
+        if (rating !== undefined) updateData.rating = String(rating);
+
+        const updatedProduct = await queries.updateProduct(id, updateData);
 
         res.status(200).json(updatedProduct);
-
-
 
     } catch(err) {
         console.error(err);

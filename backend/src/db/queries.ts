@@ -1,5 +1,5 @@
 import { db } from "./index.js";
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 import { user,products,comments, type NewProduct, type NewUser, type NewComment} from "./schema.js";
 
 //User queries
@@ -8,16 +8,11 @@ export const createUser = async (data: NewUser) => {
     return userNew;
 }
 
-
 export const getUserById = async (id: string) => {
     const foundUser = await db.query.user.findFirst({
         where: eq(user.id, id),
     });
-
-    if (!foundUser) {
-        throw new Error("User not found");
-    }
-    return foundUser;
+    return foundUser || null;
 };
 
 export const updateUser = async (id: string, data: Partial<NewUser>) => {
@@ -28,17 +23,41 @@ export const updateUser = async (id: string, data: Partial<NewUser>) => {
     return updatedUser;
 }
 
-export const upsertUser = async (data: NewUser) => {
-    //const existingUser = await getUserById(data.id);
-    //if (existingUser) {
-      //  return await updateUser(data.id, data);
-   //return await createUser(data);
+export const updateUserRole = async (id: string, role: "customer" | "seller" | "admin") => {
+    const [updatedUser] = await db.update(user).set({ role }).where(eq(user.id, id)).returning();
+    if (!updatedUser) {
+        throw new Error("User not found");
+    }
+    return updatedUser;
+}
 
+export const upsertUser = async (data: NewUser) => {
     const [upsertedUser] = await db.insert(user).values(data).onConflictDoUpdate({
         target: user.id,
         set: data,
     }).returning();
     return upsertedUser;
+}
+
+export const getUsersByRole = async (role: "customer" | "seller" | "admin") => {
+    return db.query.user.findMany({
+        where: eq(user.role, role),
+        orderBy: (user, { desc }) => [desc(user.createdAt)],
+    });
+}
+
+export const getAllUsers = async () => {
+    return db.query.user.findMany({
+        orderBy: (user, { desc }) => [desc(user.createdAt)],
+    });
+}
+
+export const deleteUser = async (id: string) => {
+    const [deletedUser] = await db.delete(user).where(eq(user.id, id)).returning();
+    if (!deletedUser) {
+        throw new Error("User not found");
+    }
+    return deletedUser;
 }
 
 //Product queries
@@ -49,6 +68,13 @@ export const createProduct = async (data: NewProduct) =>{
 }
 
 export const getAllProducts = async () => {
+    return db.query.products.findMany({
+        with: {user: true},
+        orderBy: (products, { desc }) => [desc(products.createdAt)],
+    });
+}
+
+export const getAllProductsWithUsers = async () => {
     return db.query.products.findMany({
         with: {user: true},
         orderBy: (products, { desc }) => [desc(products.createdAt)],
@@ -69,6 +95,14 @@ export const getProductById = async (id: string) => {
 export const getProductsByUserId = async (userId: string) => {
        return db.query.products.findMany({
         where: eq(products.userId, userId),
+        with: {user: true},
+        orderBy: (products, { desc }) => [desc(products.createdAt)],
+    });
+}
+
+export const getProductsByTeraId = async (teraId: string) => {
+    return db.query.products.findMany({
+        where: eq(products.teraId, teraId),
         with: {user: true},
         orderBy: (products, { desc }) => [desc(products.createdAt)],
     });

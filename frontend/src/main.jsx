@@ -1,10 +1,35 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.jsx'
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import "./index.css";
+// Render Merkato modern marketplace UI
+import MerkatoApp from "./MerkatoApp.jsx";
+import { ClerkProvider } from "@clerk/clerk-react";
+import { BrowserRouter } from "react-router-dom";
 
-createRoot(document.getElementById('root')).render(
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { CartProvider } from "./context/CartContext.jsx";
+import { UserSync } from "./components/UserSync.jsx";
+
+const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY || "";
+
+// Create a client
+const queryClient = new QueryClient();
+
+const appTree = (
+  <BrowserRouter>
+    <QueryClientProvider client={queryClient}>
+      <CartProvider>
+        <UserSync />
+        <MerkatoApp />
+      </CartProvider>
+    </QueryClientProvider>
+  </BrowserRouter>
+);
+
+createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <App />
-  </StrictMode>,
-)
+    <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
+      {appTree}
+    </ClerkProvider>
+  </StrictMode>
+);
