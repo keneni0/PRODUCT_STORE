@@ -1,25 +1,147 @@
+<<<<<<< HEAD
+import React, { useState, useEffect } from 'react';
+=======
 import React from 'react';
+>>>>>>> a57743dd7920350dcce6e326a41e080851f72dea
 import { useParams, Link } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import ProductCard from '../components/ProductCard';
+<<<<<<< HEAD
+import { categories } from '../mockData';
+import { api } from '../utils/api';
+=======
 import { products, getSellerById } from '../mockData';
+>>>>>>> a57743dd7920350dcce6e326a41e080851f72dea
 import { useCart } from '../context/CartContext';
 import { Star } from 'lucide-react';
 
 export default function ProductPageShim(){
   const { id } = useParams();
+<<<<<<< HEAD
+  const { addToCart } = useCart();
+  const [product, setProduct] = useState(null);
+  const [relatedProducts, setRelatedProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    loadProduct();
+  }, [id]);
+
+  const loadProduct = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      // Try API first
+      try {
+        const apiProduct = await api.getProductById(id);
+        setProduct({
+          id: apiProduct.id,
+          name: apiProduct.title,
+          priceETB: apiProduct.priceETB,
+          seller: apiProduct.user?.name || 'Unknown',
+          sellerId: apiProduct.userId,
+          teraId: apiProduct.teraId,
+          section: apiProduct.section,
+          description: apiProduct.description,
+          stock: apiProduct.stock,
+          imageUrl: apiProduct.imageUrl,
+          rating: apiProduct.rating ? parseFloat(apiProduct.rating) : null,
+          popular: apiProduct.popular === 'true',
+        });
+
+        // Load related products
+        if (apiProduct.teraId) {
+          try {
+            const related = await api.getProductsByTera(apiProduct.teraId);
+            setRelatedProducts(
+              related
+                .filter(p => p.id !== id)
+                .slice(0, 4)
+                .map(p => ({
+                  id: p.id,
+                  name: p.title,
+                  priceETB: p.priceETB,
+                  seller: p.user?.name || 'Unknown',
+                  sellerId: p.userId,
+                  teraId: p.teraId,
+                  section: p.section,
+                  description: p.description,
+                  stock: p.stock,
+                  imageUrl: p.imageUrl,
+                  rating: p.rating ? parseFloat(p.rating) : null,
+                  popular: p.popular === 'true',
+                }))
+            );
+          } catch (err) {
+            console.log("Failed to load related products:", err);
+          }
+        }
+      } catch (apiErr) {
+        // Fallback to mockData
+        console.log("API fetch failed, using mock data:", apiErr);
+        const { products: mockProducts } = await import('../mockData');
+        const mockProduct = mockProducts.find(p => p.id === id);
+        if (mockProduct) {
+          setProduct(mockProduct);
+          setRelatedProducts(
+            mockProducts
+              .filter(p => p.teraId === mockProduct.teraId && p.id !== id)
+              .slice(0, 4)
+          );
+        } else {
+          setError("Product not found");
+        }
+      }
+    } catch (err) {
+      setError(err.message || "Failed to load product");
+      console.error("Load product error:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleAddToCart = () => {
+    if (product) {
+      addToCart(product.id, 1);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-merkato-cream">
+        <Header />
+        <main className="max-w-7xl mx-auto px-6 py-8">
+          <div className="text-center py-16">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-merkato-orange mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading product...</p>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (error || !product) {
+=======
   const product = products.find(p => p.id === id);
   const { addToCart } = useCart();
 
   if (!product) {
+>>>>>>> a57743dd7920350dcce6e326a41e080851f72dea
     return (
       <div className="min-h-screen bg-merkato-cream">
         <Header />
         <main className="max-w-7xl mx-auto px-6 py-8">
           <div className="text-center py-16">
             <h1 className="text-3xl font-bold text-merkato-gray mb-4">Product not found</h1>
+<<<<<<< HEAD
+            <p className="text-gray-600 mb-6">{error || "The product you're looking for doesn't exist."}</p>
+=======
             <p className="text-gray-600 mb-6">The product you're looking for doesn't exist.</p>
+>>>>>>> a57743dd7920350dcce6e326a41e080851f72dea
             <Link to="/" className="btn-primary inline-block">Go Home</Link>
           </div>
         </main>
@@ -28,6 +150,8 @@ export default function ProductPageShim(){
     );
   }
 
+<<<<<<< HEAD
+=======
   const seller = getSellerById(product.sellerId);
   const relatedProducts = products
     .filter(p => p.teraId === product.teraId && p.id !== product.id)
@@ -37,6 +161,7 @@ export default function ProductPageShim(){
     addToCart(product.id, 1);
   };
 
+>>>>>>> a57743dd7920350dcce6e326a41e080851f72dea
   return (
     <div className="min-h-screen bg-merkato-cream">
       <Header />
@@ -104,7 +229,10 @@ export default function ProductPageShim(){
                   className="text-merkato-orange hover:underline font-medium"
                 >
                   Sold by: {product.seller}
+<<<<<<< HEAD
+=======
                   {seller?.rating && ` ⭐ ${seller.rating}`}
+>>>>>>> a57743dd7920350dcce6e326a41e080851f72dea
                 </Link>
               </div>
             </div>

@@ -9,6 +9,12 @@ import SearchResultsPage from './pages/SearchResultsPage';
 import CategoriesPage from './pages/CategoriesPage';
 import DealsPage from './pages/DealsPage';
 import SellPage from './pages/SellPage';
+<<<<<<< HEAD
+import SellerDashboard from './pages/SellerDashboard';
+import AdminDashboard from './pages/AdminDashboard';
+import { ProtectedRoute } from './components/ProtectedRoute';
+=======
+>>>>>>> a57743dd7920350dcce6e326a41e080851f72dea
 
 export default function MerkatoApp(){
   return (
@@ -22,6 +28,25 @@ export default function MerkatoApp(){
       <Route path="/categories" element={<CategoriesPage/>} />
       <Route path="/deals" element={<DealsPage/>} />
       <Route path="/sell" element={<SellPage/>} />
+<<<<<<< HEAD
+      <Route 
+        path="/seller/dashboard" 
+        element={
+          <ProtectedRoute allowedRoles={['seller', 'admin']}>
+            <SellerDashboard />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/admin/dashboard" 
+        element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <AdminDashboard />
+          </ProtectedRoute>
+        } 
+      />
+=======
+>>>>>>> a57743dd7920350dcce6e326a41e080851f72dea
     </Routes>
   )
 }

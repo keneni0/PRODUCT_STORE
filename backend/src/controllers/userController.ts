@@ -8,7 +8,7 @@ export async function syncUser(req:Request,res:Response){
         if (!userId) {
             return res.status(401).json({ message: "Unauthorized" });
         }
-        const  { email,name,imageUrl } = req.body;
+        const  { email,name,imageUrl, role } = req.body;
         if (!email || !name ||!imageUrl) {
             return res.status(400).json({error:"Email, name and imageUrl are required"});
         }
@@ -17,7 +17,8 @@ export async function syncUser(req:Request,res:Response){
             id:userId,
             email,
             name,
-            imageUrl
+            imageUrl,
+            role: role || "customer"
         });
         res.status(200).json(userData);
     }
