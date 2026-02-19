@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-<<<<<<< HEAD
 import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton, useUser } from '@clerk/clerk-react';
 import { Search } from 'lucide-react';
 import { useCart } from '../context/CartContext';
@@ -10,16 +9,8 @@ import { useRole } from '../hooks/useRole';
 export default function Header() {
   const { itemCount } = useCart();
   const { user } = useUser();
-  const { role, isSeller, isAdmin } = useRole();
-=======
-import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton } from '@clerk/clerk-react';
-import { Search } from 'lucide-react';
-import { useCart } from '../context/CartContext';
-import { products } from '../mockData';
+  const { role, phoneNumber, isSeller, isAdmin } = useRole();
 
-export default function Header() {
-  const { itemCount } = useCart();
->>>>>>> a57743dd7920350dcce6e326a41e080851f72dea
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [showDropdown, setShowDropdown] = useState(false);
@@ -69,7 +60,7 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between gap-8">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 flex-shrink-0">
+          <Link to="/" className="flex items-center gap-3 shrink-0">
             <div className="w-10 h-10 bg-merkato-orange text-white rounded-lg flex items-center justify-center font-bold text-lg shadow-md">M</div>
             <span className="text-xl font-bold text-merkato-gray">Merkato Online</span>
           </Link>
@@ -127,12 +118,17 @@ export default function Header() {
           </div>
 
           {/* Navigation */}
-          <nav className="flex items-center gap-6 flex-shrink-0">
+          <nav className="flex items-center gap-6 shrink-0">
             <Link to="/categories" className="text-sm font-medium text-merkato-gray hover:text-merkato-orange transition-colors">Categories</Link>
             <Link to="/deals" className="text-sm font-medium text-merkato-gray hover:text-merkato-orange transition-colors">Deals</Link>
-            <Link to="/sell" className="text-sm font-medium text-merkato-gray hover:text-merkato-orange transition-colors">Sell</Link>
+            <Link
+              to={isSeller ? "/seller/dashboard" : "/sell"}
+              className="text-sm font-medium text-merkato-gray hover:text-merkato-orange transition-colors"
+            >
+              Sell
+            </Link>
             
-<<<<<<< HEAD
+
             {/* Role-based links */}
             <SignedIn>
               {isSeller && (
@@ -147,8 +143,7 @@ export default function Header() {
               )}
             </SignedIn>
             
-=======
->>>>>>> a57743dd7920350dcce6e326a41e080851f72dea
+
             {/* Cart */}
             <Link to="/cart" className="relative inline-flex items-center p-2 hover:bg-gray-50 rounded-lg transition-colors">
               <svg className="w-6 h-6 text-merkato-gray" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -163,7 +158,15 @@ export default function Header() {
 
             {/* Auth */}
             <SignedIn>
-              <UserButton />
+              <div className="flex items-center gap-3">
+                {phoneNumber && (
+                  <div className="hidden sm:block text-xs text-gray-600">
+                    <div className="font-medium text-gray-800">{user?.fullName || user?.firstName || "Account"}</div>
+                    <div>Phone: {phoneNumber}</div>
+                  </div>
+                )}
+                <UserButton />
+              </div>
             </SignedIn>
 
             <SignedOut>

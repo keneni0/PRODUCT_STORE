@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUser, useClerk } from '@clerk/clerk-react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { categories } from '../mockData';
+
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 export default function SellerRegisterPage() {
   const { user } = useUser();
@@ -23,7 +25,19 @@ export default function SellerRegisterPage() {
     setLoading(true);
 
     try {
-      // Update user metadata with seller role
+      // Register as seller on backend
+      const res = await fetch(`${API_URL}/api/auth/register-seller`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({ error: 'Registration failed' }));
+        throw new Error(errorData.error || 'Failed to register as seller');
+      }
+
+      // Update Clerk user metadata to reflect seller
       await clerkUser?.update({
         publicMetadata: {
           role: 'seller',
@@ -35,14 +49,13 @@ export default function SellerRegisterPage() {
         },
       });
 
-      // Reload user to get updated metadata
       await user?.reload();
 
       alert('Successfully registered as a seller! You can now post products.');
       navigate('/seller/dashboard');
     } catch (error) {
       console.error('Registration error:', error);
-      alert('Failed to register. Please try again.');
+      alert(error.message || 'Failed to register. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -139,7 +152,7 @@ export default function SellerRegisterPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="btn-primary flex-1"
+                className="btn-primary flex-1 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? 'Registering...' : 'Register as Seller'}
               </button>

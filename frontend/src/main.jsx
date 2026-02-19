@@ -1,31 +1,22 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import "./index.css";
-// Render Merkato modern marketplace UI
-import MerkatoApp from "./MerkatoApp.jsx";
 import { ClerkProvider } from "@clerk/clerk-react";
 import { BrowserRouter } from "react-router-dom";
-
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+import "./index.css";
+import MerkatoApp from "./MerkatoApp.jsx";
 import { CartProvider } from "./context/CartContext.jsx";
-<<<<<<< HEAD
 import { UserSync } from "./components/UserSync.jsx";
-=======
->>>>>>> a57743dd7920350dcce6e326a41e080851f72dea
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY || "";
-
-// Create a client
 const queryClient = new QueryClient();
 
 const appTree = (
   <BrowserRouter>
     <QueryClientProvider client={queryClient}>
       <CartProvider>
-<<<<<<< HEAD
         <UserSync />
-=======
->>>>>>> a57743dd7920350dcce6e326a41e080851f72dea
         <MerkatoApp />
       </CartProvider>
     </QueryClientProvider>

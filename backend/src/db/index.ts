@@ -8,7 +8,12 @@ if(!ENV.DATABASE_URL){
 }
 // Create a connection pool to the PostgreSQL database
 const pool = new Pool({
-    connectionString: ENV.DATABASE_URL
+    connectionString: ENV.DATABASE_URL,
+    max: 5,
+    idleTimeoutMillis: 30_000,
+    connectionTimeoutMillis: 10_000,
+    keepAlive: true,
+    ssl: ENV.NODE_ENV === "development" ? { rejectUnauthorized: false } : undefined,
 });
 
 pool.on("connect",() =>{
@@ -19,4 +24,20 @@ pool.on("error", (err) => {
     console.error("Database connection error:", err);
 })
 
-export const db = drizzle({client:pool,schema})
+process.on("SIGTERM", async () => {
+    try {
+        await pool.end();
+    } finally {
+        process.exit(0);
+    }
+});
+
+process.on("SIGINT", async () => {
+    try {
+        await pool.end();
+    } finally {
+        process.exit(0);
+    }
+});
+
+export const db = drizzle({ client: pool, schema });

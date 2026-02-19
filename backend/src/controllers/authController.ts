@@ -2,7 +2,10 @@ import type { Request, Response } from "express";
 import { getAuth } from "@clerk/express";
 import * as queries from "../db/queries.js";
 
-// Register as seller - updates user role to seller
+/**
+ * Register user as seller
+ * Updates user role to 'seller' in the database
+ */
 export async function registerAsSeller(req: Request, res: Response) {
   try {
     const { userId } = getAuth(req);
@@ -31,7 +34,10 @@ export async function registerAsSeller(req: Request, res: Response) {
   }
 }
 
-// Get current user's role
+/**
+ * Get current authenticated user's role
+ * Returns user role, ID, email, and name
+ */
 export async function getMyRole(req: Request, res: Response) {
   try {
     const { userId } = getAuth(req);
@@ -50,10 +56,12 @@ export async function getMyRole(req: Request, res: Response) {
       role: user.role,
       userId: user.id,
       email: user.email,
-      name: user.name
+      name: user.name,
+      phoneNumber: user.phoneNumber
     });
   } catch (error) {
     console.error("Get role error:", error);
     res.status(500).json({ error: "Failed to get user role" });
   }
 }
+

@@ -64,11 +64,7 @@ export default function Footer(){
         {/* Bottom Bar */}
         <div className="border-t border-gray-200 pt-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-600">
-            <div>© 2024 Merkato Online Store. All rights reserved</div>
-            <div className="flex items-center gap-2">
-              <Heart className="w-4 h-4 text-merkato-orange fill-merkato-orange" />
-              <span>Built for Ethiopian Traders</span>
-            </div>
+            <div>© 2026 Merkato Online Store. All rights reserved</div>
             <div className="flex items-center gap-4">
               <Link to="/terms" className="hover:text-merkato-orange transition-colors">Terms</Link>
               <Link to="/privacy" className="hover:text-merkato-orange transition-colors">Privacy</Link>

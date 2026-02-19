@@ -8,18 +8,24 @@ export async function syncUser(req:Request,res:Response){
         if (!userId) {
             return res.status(401).json({ message: "Unauthorized" });
         }
-        const  { email,name,imageUrl, role } = req.body;
+        const  { email, name, imageUrl, role, phoneNumber } = req.body;
         if (!email || !name ||!imageUrl) {
             return res.status(400).json({error:"Email, name and imageUrl are required"});
         }
 
-        const userData = await queries.upsertUser({
-            id:userId,
+        const userPayload: any = {
+            id: userId,
             email,
             name,
             imageUrl,
-            role: role || "customer"
-        });
+            role: role || "customer",
+        };
+
+        if (phoneNumber) {
+            userPayload.phoneNumber = phoneNumber;
+        }
+
+        const userData = await queries.upsertUser(userPayload);
         res.status(200).json(userData);
     }
 catch (err) {

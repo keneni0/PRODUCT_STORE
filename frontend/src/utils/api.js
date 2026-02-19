@@ -2,22 +2,36 @@ const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 export async function apiRequest(endpoint, options = {}) {
   const token = await getClerkToken();
-  
-  const response = await fetch(`${API_URL}${endpoint}`, {
+
+  const fetchOptions = {
+    credentials: options.credentials || 'include',
     ...options,
     headers: {
-      "Content-Type": "application/json",
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
       ...(token && { Authorization: `Bearer ${token}` }),
       ...options.headers,
     },
-  });
+  };
+
+  const response = await fetch(`${API_URL}${endpoint}`, fetchOptions);
+  const text = await response.text();
 
   if (!response.ok) {
-    const error = await response.json().catch(() => ({ error: "Request failed" }));
-    throw new Error(error.error || error.message || "Request failed");
+    let errorMessage = text || 'Request failed';
+    try {
+      const parsed = JSON.parse(text);
+      errorMessage = parsed.error || parsed.message || JSON.stringify(parsed);
+    } catch (e) {}
+    throw new Error(errorMessage);
   }
 
-  return response.json();
+  if (!text) return null;
+  try {
+    return JSON.parse(text);
+  } catch (e) {
+    return text;
+  }
 }
 
 async function getClerkToken() {
@@ -50,4 +64,15 @@ export const api = {
   deleteUser: (userId) => apiRequest(`/api/admin/users/${userId}`, { method: "DELETE" }),
   getAllProductsWithSellers: () => apiRequest("/api/admin/products"),
   deleteAnyProduct: (id) => apiRequest(`/api/admin/products/${id}`, { method: "DELETE" }),
+
+  // Comments
+  createComment: (productId, content) =>
+    apiRequest(`/api/comments/${productId}`, {
+      method: "POST",
+      body: JSON.stringify({ content }),
+    }),
+  deleteComment: (commentId) =>
+    apiRequest(`/api/comments/${commentId}`, {
+      method: "DELETE",
+    }),
 };

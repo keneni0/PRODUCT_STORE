@@ -10,6 +10,7 @@ export const user = pgTable("users", {
     email: text("email").notNull().unique(),
     name: text("name").notNull(),
     imageUrl: text("image_url"),
+    phoneNumber: text("phone_number"),
     role: roleEnum("role").default("customer").notNull(),
     createdAt: timestamp("created_at", { mode:"date" }).defaultNow().notNull(),
     updatedAt: timestamp("updated_at", { mode:"date" })
@@ -74,6 +75,7 @@ export const commentRelations =  relations(comments, ({ one }) => ({
     references: [products.id]
    })
 }))
+
 
 //Type inteferneces for the tables
 export type User = typeof user.$inferSelect

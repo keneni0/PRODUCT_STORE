@@ -1,12 +1,12 @@
 export const categories = [
-  { id: 'shiro', title: 'Shiro Tera', desc: 'Spices & Grains', img: '/images/shiro.jpg' },
-  { id: 'buna', title: 'Buna Tera', desc: 'Coffee & Coffee Equipment', img: '/images/coffee.jpg' },
-  { id: 'shemene', title: 'Shemene Tera', desc: 'Clothing & Textiles', img: '/images/textiles.jpg' },
-  { id: 'mesob', title: 'Mesob Tera', desc: 'Baskets & Traditional Items', img: '/images/baskets.jpg' },
-  { id: 'menalesh', title: 'Menalesh Tera', desc: 'Metal Works & Tools', img: '/images/metal.jpg' },
-  { id: 'atikilt', title: 'Atikilt Tera', desc: 'Vegetables & Fruits', img: '/images/produce.jpg' },
-  { id: 'sumale', title: 'Sumale Tera', desc: 'Recycled & Second-hand Goods', img: '/images/secondhand.jpg' },
-  { id: 'electronics', title: 'Electronics Area', desc: 'Phones & Accessories', img: '/images/electronics.jpg' },
+  { id: 'shiro', title: 'Shiro Tera', desc: 'Spices & Grains', img: '/images/shirotera.jpg' },
+  { id: 'buna', title: 'Buna Tera', desc: 'Coffee & Coffee Equipment', img: '/images/bunatera.jpg' },
+  { id: 'shemene', title: 'Shemene Tera', desc: 'Clothing & Textiles', img: '/images/shemenetera.png' },
+  { id: 'mesob', title: 'Mesob Tera', desc: 'Baskets & Traditional Items', img: '/images/mesobtera.jpg' },
+  { id: 'menalesh', title: 'Menalesh Tera', desc: 'Metal Works & Tools', img: '/images/minaleshtera.jpg' },
+  { id: 'atikilt', title: 'Atikilt Tera', desc: 'Vegetables & Fruits', img: '/images/atililtera.jpg' },
+  { id: 'sumale', title: 'Sumale Tera', desc: 'Recycled & Second-hand Goods', img: '/images/sumaletera.jpg' },
+  { id: 'electronics', title: 'Electronics Area', desc: 'Phones & Accessories', img: '/images/electronicstera.jpg' },
 ];
 
 export const sellers = [
@@ -30,7 +30,7 @@ export function getSellerById(id) {
 
 export const products = [
   {
-    id: 'p1',
+    id: '1',
     name: 'Buna Chebsa Coffee Beans',
     priceETB: 450,
     seller: 'Alemu Coffee Traders',
@@ -44,7 +44,7 @@ export const products = [
     popular: true,
   },
   {
-    id: 'p2',
+    id: '2',
     name: 'Handwoven Mesob Basket',
     priceETB: 1200,
     seller: 'Tigist Crafts',
@@ -57,7 +57,7 @@ export const products = [
     rating: 4.9,
   },
   {
-    id: 'p3',
+    id: '3',
     name: 'Shemema Cotton Shawl',
     priceETB: 800,
     seller: 'Shemene Textiles',
@@ -71,7 +71,7 @@ export const products = [
     popular: true,
   },
   {
-    id: 'p4',
+    id: '4',
     name: 'Metal Coffee Pot (Jebena)',
     priceETB: 650,
     seller: 'Menalesh Metals',
@@ -84,7 +84,7 @@ export const products = [
     rating: 4.4,
   },
   {
-    id: 'p5',
+    id: '5',
     name: 'Fresh Atikilt Tomatoes (1kg)',
     priceETB: 60,
     seller: 'Atikilt Farmers Co-op',
@@ -97,7 +97,7 @@ export const products = [
     rating: 4.3,
   },
   {
-    id: 'p6',
+    id: '6',
     name: 'Used Smartphone - Good Condition',
     priceETB: 3500,
     seller: 'Sumale Electronics',
@@ -110,7 +110,7 @@ export const products = [
     rating: 4.1,
   },
   {
-    id: 'p7',
+    id: '7',
     name: 'Mitmita (Spicy Chili Blend) 250g',
     priceETB: 180,
     seller: 'Shiro Spice House',
@@ -124,7 +124,7 @@ export const products = [
     popular: true,
   },
   {
-    id: 'p8',
+    id: '8',
     name: 'Berbere (Premium) 500g',
     priceETB: 260,
     seller: 'Shiro Spice House',
@@ -138,7 +138,7 @@ export const products = [
     popular: true,
   },
   {
-    id: 'p9',
+    id: '9',
     name: 'Green Coffee Beans (Raw) 1kg',
     priceETB: 520,
     seller: 'Alemu Coffee Traders',
@@ -151,7 +151,7 @@ export const products = [
     rating: 4.5,
   },
   {
-    id: 'p10',
+    id: '10',
     name: 'Jebena Clay Pot (Traditional)',
     priceETB: 980,
     seller: 'Menalesh Metals',
@@ -164,7 +164,7 @@ export const products = [
     rating: 4.4,
   },
   {
-    id: 'p11',
+    id: '11',
     name: 'Handcrafted Mesob (Large)',
     priceETB: 1900,
     seller: 'Tigist Crafts',
@@ -178,7 +178,7 @@ export const products = [
     popular: true,
   },
   {
-    id: 'p12',
+    id: '12',
     name: 'Gabi Blanket (Cotton, White)',
     priceETB: 1500,
     seller: 'Shemene Textiles',
@@ -191,7 +191,7 @@ export const products = [
     rating: 4.6,
   },
   {
-    id: 'p13',
+    id: '13',
     name: 'Atikilt Potatoes (2kg)',
     priceETB: 140,
     seller: 'Atikilt Farmers Co-op',
@@ -204,7 +204,7 @@ export const products = [
     rating: 4.2,
   },
   {
-    id: 'p14',
+    id: '14',
     name: 'Atikilt Avocado (3pcs)',
     priceETB: 120,
     seller: 'Atikilt Farmers Co-op',
@@ -218,7 +218,7 @@ export const products = [
     popular: true,
   },
   {
-    id: 'p15',
+    id: '15',
     name: 'USB-C Fast Charger (Original)',
     priceETB: 420,
     seller: 'Sumale Electronics',
@@ -231,7 +231,7 @@ export const products = [
     rating: 4.3,
   },
   {
-    id: 'p16',
+    id: '16',
     name: 'Wireless Earbuds (Budget)',
     priceETB: 950,
     seller: 'Sumale Electronics',
@@ -244,7 +244,7 @@ export const products = [
     rating: 4.0,
   },
   {
-    id: 'p17',
+    id: '17',
     name: 'Second-hand Winter Jacket (Grade A)',
     priceETB: 900,
     seller: 'Merkato Reuse',
@@ -257,7 +257,7 @@ export const products = [
     rating: 4.1,
   },
   {
-    id: 'p18',
+    id: '18',
     name: 'Second-hand Cooking Pot Set',
     priceETB: 1100,
     seller: 'Merkato Reuse',

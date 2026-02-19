@@ -47,7 +47,16 @@ export async function getMyProducts(req: Request, res: Response) {
 export async function getProductById(req: Request, res: Response) {
     try {
         const { id } = req.params;
-        const product = await queries.getProductById(id);
+        let product;
+        try {
+            product = await queries.getProductById(id);
+        } catch (err: any) {
+            // Handle invalid UUIDs (e.g. legacy ids like "p8") gracefully
+            if (err && typeof err === "object" && (err as any).code === "22P02") {
+                return res.status(400).json({ error: "Invalid product id" });
+            }
+            throw err;
+        }
 
         if(!product) {
             return res.status(404).json({ error: "Product not found" });
@@ -103,8 +112,8 @@ export async function updateProduct(req: Request, res: Response) {
         }
 
         const { id } = req.params;
-        //check if product exists
-        const existingProduct = await queries.getProductById(id);
+        // check if product exists + ownership (lightweight query)
+        const existingProduct = await queries.getProductOwnerById(id);
         if (!existingProduct) {
             return res.status(404).json({ error: "Product not found" });
         }
@@ -145,8 +154,8 @@ export async function deleteProduct(req: Request, res: Response) {
             return res.status(401).json({ message: "Unauthorized" });
         }
         const { id } = req.params;
-        //check if product exists
-        const existingProduct = await queries.getProductById(id);
+        // check if product exists + ownership (lightweight query)
+        const existingProduct = await queries.getProductOwnerById(id);
         if (!existingProduct) {
             return res.status(404).json({ error: "Product not found" });
         }
