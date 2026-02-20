@@ -78,7 +78,7 @@ export default function ProductPageShim() {
 
       } catch (apiErr) {
         console.error("API failed:", apiErr);
-        // Fallback to mock data if API fails (e.g., invalid UUID like "3")
+        // Fallback to mock data if API fails (e.g., invalid UUID like "8" or "3")
         const mockProduct = mockProducts.find((p) => p.id === id);
         if (mockProduct) {
           const mappedMockProduct = {
@@ -98,6 +98,7 @@ export default function ProductPageShim() {
             comments: [],
           };
           setProduct(mappedMockProduct);
+          setError(null); // Clear error so product displays
           
           // Load related products from mock data
           const related = mockProducts
@@ -118,6 +119,7 @@ export default function ProductPageShim() {
               popular: p.popular || false,
             }));
           setRelatedProducts(related);
+          return; // Exit early, don't set error
         } else {
           setError("Product not found");
         }
