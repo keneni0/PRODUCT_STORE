@@ -41,3 +41,5 @@ Thumbs.db
 # Lockfiles (optional)
 # package-lock.json
 # yarn.lock
+.vercel
+.env*.local

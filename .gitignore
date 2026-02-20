@@ -38,3 +38,5 @@ public/
 coverage/
 .cache/
 *.md
+.vercel
+.env*.local
