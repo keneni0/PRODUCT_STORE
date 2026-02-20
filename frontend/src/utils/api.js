@@ -35,9 +35,18 @@ export async function apiRequest(endpoint, options = {}) {
 }
 
 async function getClerkToken() {
-  // Clerk token is automatically sent via cookies with clerkMiddleware
-  // For explicit token passing, you'd use Clerk's getToken() method
-  return null; // Clerk handles auth via cookies
+  try {
+    // Access Clerk instance from window (set by ClerkProvider)
+    // ClerkProvider sets window.Clerk when initialized
+    if (typeof window !== 'undefined' && window.Clerk?.session) {
+      const token = await window.Clerk.session.getToken();
+      return token;
+    }
+    return null;
+  } catch (error) {
+    // User not authenticated or Clerk not initialized
+    return null;
+  }
 }
 
 export const api = {

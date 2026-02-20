@@ -1,11 +1,11 @@
 import { Router } from "express";
 import * as commentController from "../controllers/commentController.js";
-import { requireAuth } from "@clerk/express";
+import { requireAuthJson } from "../middleware/roleMiddleware.js";
 
 
 const router = Router();
 
-router.post("/:productId", requireAuth(), commentController.createComment);
-router.delete("/:commentId", requireAuth(), commentController.deleteComment);
+router.post("/:productId", requireAuthJson, commentController.createComment);
+router.delete("/:commentId", requireAuthJson, commentController.deleteComment);
 
 export default router;

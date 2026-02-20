@@ -1,11 +1,11 @@
 import { Router } from "express";
 import  { syncUser } from "../controllers/userController.js";
-import { requireAuth } from "@clerk/express";
+import { requireAuthJson } from "../middleware/roleMiddleware.js";
 
 const router = Router();
 
 
-router.post("/sync", requireAuth(), syncUser) //sync clerk user to DB IS Protected route
+router.post("/sync", requireAuthJson, syncUser) //sync clerk user to DB IS Protected route
 
 
 export default router;

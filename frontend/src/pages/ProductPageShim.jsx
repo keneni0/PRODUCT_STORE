@@ -4,6 +4,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import ProductCard from '../components/ProductCard';
 import { api } from '../utils/api';
+import { products as mockProducts } from '../mockData';
 import { Star } from 'lucide-react';
 import { useAuth, useUser } from '@clerk/clerk-react';
 
@@ -77,7 +78,49 @@ export default function ProductPageShim() {
 
       } catch (apiErr) {
         console.error("API failed:", apiErr);
-        setError("Failed to load product");
+        // Fallback to mock data if API fails (e.g., invalid UUID like "3")
+        const mockProduct = mockProducts.find((p) => p.id === id);
+        if (mockProduct) {
+          const mappedMockProduct = {
+            id: mockProduct.id,
+            name: mockProduct.name,
+            priceETB: mockProduct.priceETB,
+            seller: mockProduct.seller,
+            sellerId: mockProduct.sellerId,
+            sellerPhone: null,
+            teraId: mockProduct.teraId,
+            section: mockProduct.section,
+            description: mockProduct.description,
+            stock: mockProduct.stock,
+            imageUrl: mockProduct.imageUrl,
+            rating: mockProduct.rating || null,
+            popular: mockProduct.popular || false,
+            comments: [],
+          };
+          setProduct(mappedMockProduct);
+          
+          // Load related products from mock data
+          const related = mockProducts
+            .filter(p => p.teraId === mockProduct.teraId && p.id !== id)
+            .slice(0, 4)
+            .map(p => ({
+              id: p.id,
+              name: p.name,
+              priceETB: p.priceETB,
+              seller: p.seller,
+              sellerId: p.sellerId,
+              teraId: p.teraId,
+              section: p.section,
+              description: p.description,
+              stock: p.stock,
+              imageUrl: p.imageUrl,
+              rating: p.rating || null,
+              popular: p.popular || false,
+            }));
+          setRelatedProducts(related);
+        } else {
+          setError("Product not found");
+        }
       }
 
     } catch (err) {

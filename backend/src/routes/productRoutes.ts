@@ -8,17 +8,16 @@ import {
   deleteProduct,
   getProductsByTera,
 } from "../controllers/productController.js";
-import { requireAuth } from "@clerk/express";
-import { requireSellerOrAdmin } from "../middleware/roleMiddleware.js";
+import { requireAuthJson, requireSellerOrAdmin } from "../middleware/roleMiddleware.js";
 
 const router = Router();
 
 router.get("/", getAllProducts);
 router.get("/tera/:teraId", getProductsByTera);
-router.get("/my", requireAuth(), getMyProducts);
+router.get("/my", requireAuthJson, getMyProducts);
 router.get("/:id", getProductById);
-router.post("/", requireAuth(), requireSellerOrAdmin(), createProduct);
-router.put("/:id", requireAuth(), updateProduct);
-router.delete("/:id", requireAuth(), deleteProduct);
+router.post("/", requireAuthJson, requireSellerOrAdmin(), createProduct);
+router.put("/:id", requireAuthJson, updateProduct);
+router.delete("/:id", requireAuthJson, deleteProduct);
 
 export default router;

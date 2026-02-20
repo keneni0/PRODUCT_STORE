@@ -7,13 +7,12 @@ import {
   getAllProductsWithSellers,
   deleteAnyProduct,
 } from "../controllers/adminController.js";
-import { requireAuth } from "@clerk/express";
-import { requireAdmin } from "../middleware/roleMiddleware.js";
+import { requireAuthJson, requireAdmin } from "../middleware/roleMiddleware.js";
 
 const router = Router();
 
 // All admin routes require authentication and admin role
-router.use(requireAuth());
+router.use(requireAuthJson);
 router.use(requireAdmin());
 
 router.get("/sellers", getAllSellers);

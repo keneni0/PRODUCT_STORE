@@ -4,6 +4,27 @@ import * as queries from "../db/queries.js";
 
 type Role = "customer" | "seller" | "admin";
 
+/**
+ * Custom auth middleware that returns JSON errors instead of redirecting
+ * Use this instead of Clerk's requireAuth() for API routes
+ */
+export function requireAuthJson(req: Request, res: Response, next: NextFunction) {
+  try {
+    const { userId } = getAuth(req);
+    
+    if (!userId) {
+      return res.status(401).json({ error: "Unauthorized", message: "Authentication required" });
+    }
+    
+    // Attach userId to request for use in controllers
+    (req as any).userId = userId;
+    next();
+  } catch (error) {
+    console.error("Auth middleware error:", error);
+    res.status(401).json({ error: "Unauthorized", message: "Authentication failed" });
+  }
+}
+
 export function requireRole(...allowedRoles: Role[]) {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {

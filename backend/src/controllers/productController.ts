@@ -51,9 +51,10 @@ export async function getProductById(req: Request, res: Response) {
         try {
             product = await queries.getProductById(id);
         } catch (err: any) {
-            // Handle invalid UUIDs (e.g. legacy ids like "p8") gracefully
-            if (err && typeof err === "object" && (err as any).code === "22P02") {
-                return res.status(400).json({ error: "Invalid product id" });
+            console.error("Database error in getProductById:", err);
+            // Handle invalid UUIDs (e.g. legacy ids like "p8" or "3") gracefully
+            if (err && typeof err === "object" && ((err as any).code === "22P02" || err.message?.includes("invalid input syntax"))) {
+                return res.status(400).json({ error: "Invalid product id format", message: "Product ID must be a valid UUID" });
             }
             throw err;
         }
@@ -63,8 +64,11 @@ export async function getProductById(req: Request, res: Response) {
         }
         res.status(200).json(product);
     }catch(err) {
-        console.error(err);
-        res.status(500).json({ error: "Failed to get product" });
+        console.error("Error in getProductById controller:", err);
+        res.status(500).json({ 
+            error: "Failed to get product",
+            message: process.env.NODE_ENV === "development" ? String(err) : undefined
+        });
      }
 }
 
