@@ -32,8 +32,8 @@ logs/
 
 # Frontend / Vite
 .vite/
-public/
 
+./cursor
 # Misc
 coverage/
 .cache/
