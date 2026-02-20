@@ -18,12 +18,14 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(cors({
-  origin: process.env.FRONTEND_URL,
+  origin: process.env.FRONTEND_URL || true,
   credentials: true,
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization", "Accept"],
 }));
-app.use(clerkMiddleware());
+if (process.env.CLERK_SECRET_KEY) {
+  app.use(clerkMiddleware());
+}
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -38,6 +40,15 @@ app.use("/api/products", productRoutes);
 app.use("/api/comments", commentRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);
+
+// Global error handler so serverless function doesn't crash on uncaught errors
+app.use((err: unknown, _req: Request, res: Response, _next: () => void) => {
+  console.error("Unhandled error:", err);
+  res.status(500).json({
+    error: "INTERNAL_SERVER_ERROR",
+    message: process.env.NODE_ENV === "production" ? "An error occurred." : String(err),
+  });
+});
 
 // Export for Vercel serverless; only listen when running locally
 export default app;
