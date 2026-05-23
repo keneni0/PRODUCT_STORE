@@ -4,6 +4,9 @@
   "version": "1.0.0",
   "description": "Frontend application for Merkato Online marketplace",
   "type": "module",
+  "engines": {
+    "node": "20.x"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
