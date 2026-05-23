@@ -1,8 +1,8 @@
 # Merkato Online - E-commerce Marketplace
 
-A modern e-commerce marketplace for Ethiopian products with buyers, sellers, and admins.
+A modern e-commerce marketplace for Ethiopian products with buyers, sellers, and admin.
 
-🌐 **Live Site:** https://productstore-production-22d0.up.railway.app
+🌐 **Live Site:** https://product-store-six-gamma.vercel.app
 
 ## 🚀 Tech Stack
 
