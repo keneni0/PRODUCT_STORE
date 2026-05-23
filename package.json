@@ -2,14 +2,14 @@
   "name": "product-store",
   "private": true,
   "type": "module",
+  "engines": {
+    "node": "20.x"
+  },
   "scripts": {
-    "build": "npm install --prefix backend && npm run build --prefix backend && npm install --prefix frontend && npm run build --prefix frontend",
-    "start": "node index.js"
+    "build": "npm install --prefix backend --include=dev && npm run build --prefix backend",
+    "start": "node backend/dist/src/index.js"
   },
   "dependencies": {
     "express": "^5.2.1"
-  },
-  "engines": {
-    "node": "18.x"
   }
 }
